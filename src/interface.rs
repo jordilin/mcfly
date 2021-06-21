@@ -51,12 +51,12 @@ impl MenuMode {
     fn text(&self, interface: &Interface) -> &str {
         match *self {
             MenuMode::Normal => match interface.settings.key_scheme {
-                KeyScheme::Emacs => "McFly | ESC - Exit | ⏎ - Run | TAB - Edit | F2 - Delete",
+                KeyScheme::Emacs => "McFly | ESC - Exit | ENTER/TAB - Edit | F2 - Delete",
                 KeyScheme::Vim => {
                     if interface.in_vim_insert_mode {
-                        "McFly (Vim) | ESC - Exit | ⏎ - Run | TAB - Edit | F2 - Delete        -- INSERT --"
+                        "McFly (Vim) | ESC - Exit | ENTER/TAB - Edit | F2 - Delete        -- INSERT --"
                     } else {
-                        "McFly (Vim) | ESC - Exit | ⏎ - Run | TAB - Edit | F2 - Delete"
+                        "McFly (Vim) | ESC - Exit | ENTER/TAB - Edit | F2 - Delete"
                     }
                 }
             },
@@ -365,7 +365,7 @@ impl<'a> Interface<'a> {
     fn select_with_emacs_key_scheme(&mut self, k: Key) -> bool {
         match k {
             Key::Char('\n') | Key::Char('\r') | Key::Ctrl('j') => {
-                self.run = true;
+                self.run = false;
                 self.accept_selection();
                 return true;
             }
@@ -442,7 +442,7 @@ impl<'a> Interface<'a> {
         if self.in_vim_insert_mode {
             match k {
                 Key::Char('\n') | Key::Char('\r') | Key::Ctrl('j') => {
-                    self.run = true;
+                    self.run = false;
                     self.accept_selection();
                     return true;
                 }
@@ -487,7 +487,7 @@ impl<'a> Interface<'a> {
         } else {
             match k {
                 Key::Char('\n') | Key::Char('\r') | Key::Ctrl('j') => {
-                    self.run = true;
+                    self.run = false;
                     self.accept_selection();
                     return true;
                 }
